@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>nciku</title>
+    <style type="text/css">
+        body{
+            margin: 0;
+            font:normal 16px/1.5 "Arial", "宋体", sans-serif;
+            background-color: #fff;
+        }
+
+        /*header*/
+        header{
+            width: 100%;
+        }
+
+        .sprite{ display: inline-block; background: url('sprite.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: left; }
+
+        .topbar{
+            width: 100%;
+            height: 30px;
+            background-color: #282828;
+        }
+        .navbar{
+            position: relative;
+            width: 100%;
+            height: 50px;
+            background: url("navbar.png") repeat-x;
+            border: none;
+            border-bottom: #64B112 1px solid;
+            letter-spacing: 1px;
+        }
+        :root .navbar{
+            background-image: none;
+            background: -webkit-linear-gradient(#64B112, #8FCA40);
+            background: -o-linear-gradient(#64B112, #8FCA40);
+            background: -moz-linear-gradient(#64B112, #8FCA40);
+            background: linear-gradient(#64B112, #8FCA40);
+        }
+        .navbar ul{
+            padding: 0;
+            height: 100%;
+            list-style: none;
+        }
+
+        .ovh{
+            height: 101%;
+            overflow: hidden;
+        }
+        .page-links{
+            margin: 0 0 0 6%;
+            float: left;
+        }
+        .user-links{
+            margin: 0 4% 0 0;
+            float: right;
+        }
+
+        .nav{
+            margin: 0;
+            float: left;
+            background: none;
+            border: none;
+        }
+        .page-links .nav{
+            padding: 13px 0 0 0;
+        }
+        .page-links a{
+            padding: 0 20px;
+        }
+        .user-links .nav{
+            line-height: 50px;
+        }
+        .user-links a{
+            padding: 0 10px;
+        }
+
+        .nav a, .tab-list a{
+            line-height: 16px;
+            border: none;
+            text-decoration: none;
+        }
+        .nav a{
+            color: #fff;
+        }
+
+        .nav a:hover, .nav select:hover{
+            color: #0089AB;
+        }
+
+        .page-links .active{
+            background-color: #fff;
+            border-bottom: #fff 1px solid;
+        }
+
+        .active a{
+            color: #000;
+            font-weight: bold;
+        }
+        .active a:hover{
+            color: #000;
+        }
+
+
+        .divide a{
+            border-left: #A2CD5F 1px solid;
+        }
+
+        .select{
+            display: inline-block;
+            position: relative;
+            margin: 0 0 0 7px;
+            width: 85px;
+            overflow: hidden;
+        }
+
+        .nav select{
+            position: relative;
+            display: block;
+            margin: 15px 0 0 0;
+            width: 102px;
+            height: 20px;
+            font-size: 16px;
+            border: none;
+            color: #fff;
+            background: transparent;
+            outline:0 none;
+        }
+        .nav select > option{
+            color: #000;
+        }
+
+        .tri{
+            margin-top: 9px;
+            margin-left: 48%;
+            width: 0;
+            height: 0;
+            border-color: #74BF1D transparent transparent transparent;
+            border-width: 4px 4px 0 4px;
+            border-style: solid;
+            visibility: hidden;
+        }
+        .active .tri{
+            visibility: visible;
+        }
+
+        .square{
+            margin-top: -1px;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            vertical-align: middle;
+            border: #A2CD5F 2px solid;
+        }
+        .select-icon{
+            position: absolute;
+            right: 1px;
+            top: 17px;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            -moz-box-shadow: 1px 1px 1px #4E910A;
+            box-shadow: 1px 1px 1px #4E910A;
+        }
+        .select-arrow{
+            position: absolute;
+            top: 7px;
+            left: 5px;
+            width: 0;
+            height: 0;
+            border-color: #74BF1D transparent transparent transparent;
+            border-width: 4px 4px 0 4px;
+            border-style: solid;
+        }
+        .select-dark-part{
+            position: absolute;
+            top: 8px;
+            width: 18px;
+            height: 10px;
+            background-color: #F1F1EE;
+        }
+
+        /*banner*/
+        .banner{
+            width: 100%;
+            background: url("banner.png") repeat-x bottom;
+            border: none;
+            border-bottom: #EAE9EA 1px solid;
+        }
+
+        :root .banner{
+            background-image: none;
+            background: -webkit-linear-gradient(#fff, #F5F5F5);
+            background: -o-linear-gradient(#fff, #F5F5F5);
+            background: -moz-linear-gradient(#fff, #F5F5F5);
+            background: linear-gradient(#fff, #F5F5F5);
+        }
+
+        .search{
+            float: left;
+            padding: 4% 0 4% 14%;
+            width: 38%;
+            min-width: 400px;
+        }
+        .search-title{
+            margin: 0 0 12px;
+            position: relative;
+            height: 60px;
+            color: #4E910A;
+            overflow: hidden;
+        }
+        .search-title img{
+            position: absolute;
+            left: 5px;
+            bottom: 2px;
+        }
+        .search-title .right{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+        }
+        .search-bar{
+            border: #74BF1D 7px solid;
+        }
+        .search-input{
+            position: relative;
+            display: block;
+            border: #58A412 1px solid;
+            height: 45px;
+        }
+        .search-input #search{
+            margin: 10px 0 0 10px;
+            padding: 0;
+            background: transparent;
+            border: none;
+            font-size: 22px;
+            font-weight: bold;
+            height: 24px;
+            width: 90%;
+            outline: 0 none;
+        }
+        .searchBtn{
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 49px;
+            height: 42px;
+            background-position: -0px -0px;
+        }
+        .search-setting{
+            padding: 10px 0 0 5px;
+        }
+        .msg-icon{
+            margin: 5px 3px -1px 3px;
+            background-position: -0px -116px;
+            width: 16px;
+            height: 16px;
+        }
+        .notes{
+            float: left;
+            padding: 3.5% 0 3.5% 4%;
+            width: 35%;
+        }
+        .video, .nciku{
+            min-height: 140px;
+        }
+        .tab-list{
+            margin: 0;
+            padding: 0;
+            width: 101%;
+            text-align: center;
+            list-style: none;
+        }
+        .tab-list li{
+            float: left;
+            width: 49.2%;
+            height: 50px;
+            border: #D7D7D7 1px solid;
+            cursor:pointer;
+        }
+        #video{
+            border-right: none;
+        }
+        .tab-list span{
+            font-weight: bold;
+            line-height: 50px;
+        }
+        .tab-list .active{
+            border-bottom: none;
+            cursor:default;
+        }
+        .tab-list .tri{
+            margin-top: -10px;
+        }
+
+        .clearfix:after{
+            content: '.';
+            display: block;
+            visibility: hidden;
+            height: 0;
+            clear: both;
+        }
+
+        .video, .nciku{
+            padding: 25px 0;
+            border: #D7D7D7 1px solid;
+            border-top: none;
+        }
+        .nciku{
+            display: none;
+        }
+        .video-img{
+            margin: 0 30px 0 18px;
+            float: left;
+        }
+        .note{
+            margin: 0 15px;
+            padding: 0;
+            max-height: 200px;
+            overflow: hidden;
+        }
+        @media screen and (max-width:960px) {
+            .search{
+                float: none;
+                margin: 0 auto;
+                padding: 4% 0;
+                width: 80%;
+            }
+            .notes{
+                float: none;
+                margin: 10px auto;
+                padding: 0;
+                width: 80%;
+            }
+        }
+        .note h1{
+            margin: 0;
+            font-weight: normal;
+            line-height: 40px;
+        }
+        .note span{
+            color: #969695;
+        }
+        hr {
+            color: #EAE9EA;
+        }
+        .note p{
+            margin: 0;
+            line-height: 24px;
+        }
+
+        /*container*/
+        .container{
+            margin: 0 auto;
+            width: 80%;
+        }
+
+        .main{
+            margin: 30px 0 0 0;
+            padding: 0 10px 0 0;
+            float: left;
+            width: 58%;
+        }
+        .side{
+            margin: 30px 0 0 10px;
+            float: left;
+            width: 40%;
+        }
+
+        .title{
+            padding: 5px 10px;
+        }
+        .title-words{
+            font-size: 18px;
+            font-weight: bold;
+            color: #000;
+        }
+        .more{
+            padding-right: 5px;
+            float: right;
+            text-decoration: none;
+            color: #000;
+        }
+        .listen{
+            min-height: 290px;
+        }
+
+        .listen, .qa, .qa-content, .ad, .cool-users{
+            border: #D7D7D7 1px solid;
+        }
+
+        .listen-title{
+            padding: 0 10px;
+            height: 46px;
+            line-height: 46px;
+            color: #4E910A;
+
+            border: none;
+            border-bottom: #D7D7D7 1px solid;
+        }
+        .listen-example{
+            margin: 0;
+            padding: 0 0 0 20px;
+            list-style: none;
+        }
+        .listen-example li{
+            padding: 10px 0 0 0;
+            display: table;
+        }
+        .listen-example div{
+            margin: 0 0 10px 0;
+            display: table-cell;
+        }
+        .listen-example p{
+            margin: 0;
+        }
+        .name{
+            min-width: 60px;
+        }
+        .name, .en{
+            color: #898989;
+        }
+        .speak .icon{
+            display: inline-block;
+            vertical-align: -2px;
+            width: 20px;
+            height: 16px;
+        }
+        .ch .icon{ background-position: -25px -42px; width: 20px; height: 16px; }
+        .en .icon{
+            margin-left: 10px;
+            background-position: -25px -58px;
+            width: 20px;
+            height: 16px;
+        }
+
+        .qa{
+            margin: 20px 0 0 0;
+            background-color: #F7F7F7;
+        }
+        .qa-content{
+            margin: 5px;
+            padding: 10px 15px;
+            background-color: #fff;
+        }
+        .qa-user i{
+            margin-right: 10px;
+        }
+        .qa-user a{
+            text-decoration: none;
+            color: #0089AB;
+        }
+        .qa-user .t{
+            padding: 0 15px;
+            color: #EAE9EA;
+        }
+        .grade{
+            font-size: 14px;
+        }
+        .grade .icon{
+            vertical-align: -3px;
+        }
+        .lv05{ background-position: -18px -92px; width: 16px; height: 16px; }
+        .lv15{ background-position: -18px -108px; width: 16px; height: 16px; }
+        .qa-user-question, .qa-user-answer{
+            position: relative;
+            margin: 12px 0;
+            padding: 8px 55px 8px 15px;
+            border: 2px solid;
+        }
+        .qa-user-question{
+            border-color: #8FD53E;
+        }
+        .qa-user-answer{
+            border-color: #D5D5D5;
+        }
+
+        .qa-tri-q, .qa-tri-a{
+            position: absolute;
+            left: 32px;
+            border-style: solid;
+        }
+        .qa-tri-q{
+            top: -8px;
+            border-width: 0 7px 7px 7px;
+            border-color: transparent transparent #75C428 transparent;
+        }
+        .qa-tri-a{
+            bottom: -8px;
+            border-width: 7px 7px 0 7px;
+            border-color: #D5D5D5 transparent transparent transparent;
+        }
+        .tri-more{
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 6px;
+            border-width: 4px 0 4px 4px;
+            border-color: transparent transparent transparent #58A412;
+            border-style: solid;
+
+        }
+        .qa-q, .qa-a{
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            margin-top: -22px;
+            display: block;
+            font-size: 30px;
+            font-weight: bold;
+        }
+        .qa-q{
+            color: #8FD53E;
+        }
+        .qa-a{
+            color: #FD8714;
+        }
+        .qa-about{
+            padding: 0 0 0 15px;
+            list-style: none;
+        }
+        .qa-about li{
+            float: left;
+            width: 50%;
+        }
+        .qa-about li span{
+            padding: 0 6px;
+            font-weight: bold;
+        }
+        .qa-ask{
+            margin: 0 0 15px 0;
+            padding: 0 15px;
+        }
+        .qa-hr{
+            border: #D7D7D7 1px;
+            border-style: dashed none none;
+        }
+        .qa-ask span{
+            font-size: 20px;
+            color: #4E910A;
+        }
+        .qa-btn{
+            float: right;
+            margin: 5px 0 0 0;
+            padding: 1px 12px;
+            color: #000;
+            text-decoration: none;
+            background-color: #fff;
+            border: #D7D7D7 1px solid;
+            border-radius: 2px;
+        }
+
+        .ad{
+            position: relative;
+            margin: 37px 0 0 0;
+            background-color: #F3F3F3;
+        }
+        .drawing{
+            position: absolute;
+            display: block;
+            height: 40px;
+            width: 40px;
+            background-color: #59BA06;
+        }
+
+        .tri-left{
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 15px solid #F3F3F3;
+            border-right: 15px solid transparent;
+        }
+        .tri-right {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-bottom: 40px solid #F3F3F3;
+            border-left: 40px solid transparent;
+        }
+
+        .drawing{
+            display: none;
+        }
+        :root .drawing{
+            display: block; /*支持CSS3则显示*/
+        }
+        .drawing-word{
+            position: absolute;
+            margin-left: 5px;
+            font-size: 12px;
+            line-height: 30px;
+            color: #fff;
+            -webkit-transform:rotate(-45deg);
+            -moz-transform:rotate(-45deg);
+            -ms-transform:rotate(-45deg);
+            -o-transform:rotate(-45deg);
+            transform:rotate(-45deg);
+        }
+
+        .ad .a-content{
+            position: relative;
+            padding: 15px 10px 15px 35px;
+        }
+        .ad p{
+            margin: 2px;
+        }
+
+        .cool-users{
+            margin: 15px 0 0 0;
+            padding: 0 10px;
+        }
+        .cool-users .title{
+            padding: 10px 5px;
+            border-bottom: #D7D7D7 1px dashed;
+        }
+
+        .user-image{
+            text-align:justify;
+            max-height: 140px;
+            overflow: hidden;
+        }
+        .user-image .box{
+            padding: 22px 5px;
+            display: inline-block;
+            width: 88px;
+            text-align: center;
+            vertical-align: top;
+        }
+        .user-image img{
+            margin: 0 auto;
+            padding: 2px;
+            display: block;
+            border: #D1D0D1 1px solid;
+        }
+        .user-image a{
+            color: #0089AB;
+            text-decoration: none;
+        }
+
+        .content{
+            margin: 18px 0;
+        }
+        .content .title{
+            padding: 5px 15px;
+        }
+        .content hr{
+            border: none;
+            border-top: #D7D7D7 1px solid;
+            border-bottom: #F5F5F5 2px solid;
+        }
+        .content-list{
+            padding: 0 0 0 12px;
+            list-style: none;
+        }
+        .content-list li{
+            height: 30px;
+            line-height: 30px;
+        }
+        .content-list span{
+            padding: 0 8px;
+            font-weight: bold;
+        }
+        .qa-about a, .content-list a{
+            color: #000;
+            text-decoration: none;
+        }
+        .content-list .topic{
+            color: #898989;
+        }
+        .content i{
+            margin-top: 5px;
+            display: inline-block;
+            width: 18px;
+            float: right;
+        }
+        .content-new{ background-position: -25px -74px; height: 18px; }
+        .content-refresh{ background-position: -0px -92px; height: 24px; }
+
+        .user-img-1 { background-position: -0px -42px; width: 25px; height: 25px; vertical-align: middle;}
+        .user-img-2 { background-position: -0px -67px; width: 25px; height: 25px; vertical-align: middle;}
+
+        .container a:hover{
+            color: #4E910A;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="topbar"></div>
+        <nav class="navbar">
+            <div class="ovh">
+                <ul class="user-links">
+                    <li class="nav"><a href="#">Sign in</a><div class="square"></div></li>
+                    <li class="nav"><a href="#">Sign up</a><div class="square"></div></li>
+                    <li class="nav"><a href="#">Help</a><div class="square"></div></li>
+                    <li class="nav"><a href="#">Blog</a><div class="square"></div></li>
+                    <li class="nav">
+                        <div class="select">
+                            <div class="select-icon"><div class="select-dark-part"></div><div class="select-arrow"></div></div>
+                            <select name="lang" id="lang">
+                                <option value="en" selected="selected">English</option>
+                                <option value="zh">Chinese</option>
+                            </select>
+                        </div>
+                    </li>
+                </ul>
+                <ul class="page-links">
+                    <li class="nav active"><a href="#">Dictionary</a><div class="tri"></div></li>
+                    <li class="nav"><a href="#">Conversation</a><div class="tri"></div></li>
+                    <li class="nav divide"><a href="#">Vocab Lists</a><div class="tri"></div></li>
+                    <li class="nav divide"><a href="#">Q&A</a><div class="tri"></div></li>
+                    <li class="nav divide"><a href="#">Theme Words</a><div class="tri"></div></li>
+                    <li class="nav divide"><a href="#">Tools</a><div class="tri"></div></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+<!--4h35min-->
+
+    <div class="banner clearfix">
+        <div class="search">
+            <div class="search-title">
+                <img src="logo.png" alt="nciku" width="365" height="60"/><span class="right">+Search by Radical</span>
+            </div>
+            <div class="search-bar">
+                <span class="search-input">
+                    <input type="text" name="search" id="search" value="苹果"/>
+                    <a href="javascript:;" class="sprite searchBtn"></a>
+                </span>
+            </div>
+            <div class="search-setting">
+                <input type="radio" name="search-setting" id="all-results" checked="checked"/><label for="all-results">All results</label>
+                <input type="radio" name="search-setting" id="pinyin"/><label for="pinyin">Pinyin</label>
+                <div class="search-msg"><span class="sprite msg-icon"></span>Improvements: conversations, stroke order</div>
+            </div>
+        </div>
+        <div class="notes">
+            <div class="tab">
+                <ul class="tab-list clearfix">
+                    <li id="video" class="active"><span>Video Notes</span><div class="tri"></div></li>
+                    <li id="nciku"><span>nciku Notes</span><div class="tri"></div></li>
+                </ul>
+            </div>
+            <div class="video">
+                <div class="video-img"><img src="video.png" width="170" alt="video"/></div>
+                <div class="note">
+                    <h1>切 <span>[qiē]</span></h1>
+                    <hr/>
+                    <span>Description:</span>
+                    <p>Chinese civil war. After the founding of the People's</p>
+                </div>
+            </div>
+            <div class="nciku"></div>
+        </div>
+    </div>
+<!--3h40min-->
+
+    <div class="container clearfix">
+        <div class="main">
+            <div class="conversation">
+                <div class="title">
+                    <span class="title-words">Conversations of the day</span>
+                    <a href="#" class="more">more</a>
+                </div>
+                <div class="listen">
+                    <div class="listen-title">
+                        <strong>Phone the family</strong> - office / making phone calls
+                    </div>
+                    <ul class="listen-example">
+                        <li>
+                            <div class="name">Clerk</div>
+                            <div class="speak">
+                                <p class="ch">谢谢，这首是我自己写的。 <span class="sprite icon"></span></p>
+                                <p class="en">It's doesn't matter. Come on, let's go inside. <span class="sprite icon"></span></p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="name">Tom</div>
+                            <div class="speak">
+                                <p class="ch">谢谢，这首是我自己。 <span class="sprite icon"></span></p>
+                                <p class="en">It's doesn't matter. Come on. <span class="sprite icon"></span></p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="name">Clerk</div>
+                            <div class="speak">
+                                <p class="ch">谢谢，这首是我自己写的。 <span class="sprite icon"></span></p>
+                                <p class="en">It's doesn't matter. Come on, let's go inside. <span class="sprite icon"></span></p>
+                            </div>
+                        </li>
+
+                        <li>
+                            <div class="name">Clerk</div>
+                            <div class="speak">
+                                <p class="ch">谢谢，这首是我自己写的。 <span class="sprite icon"></span></p>
+                                <p class="en">It's doesn't matter. Come on, let's go inside. <span class="sprite icon"></span></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="qa">
+                <div class="title">
+                    <span class="title-words">Q&A</span>
+                    <a href="#" class="more">more</a>
+                </div>
+                <div class="qa-content">
+                    <div class="qa-user">
+                        <i class="sprite user-img-1"></i><a href="#">qiaojingjil</a><span class="t">|</span><span class="grade"><i class="sprite icon lv05"></i> LV05</span>
+                    </div>
+                    <div class="qa-user-question">
+                        无厘头的由来是什么？
+                        <div class="qa-tri-q"></div>
+                        <span class="qa-q">Q</span>
+                    </div>
+                    <div class="qa-user-answer">
+                        loony tone的音译。意为怪腔怪调，语气或行为等傻里傻气、疯疯癫癫的没正经。香港影评人最初用……
+                        <a class="more" href="#"><div class="tri-more"></div>more</a>
+                        <div class="qa-tri-a"></div>
+                        <span class="qa-a">A</span>
+                    </div>
+                    <div class="qa-user">
+                        <i class="sprite user-img-2"></i><a href="#">qiaojingjil</a><span class="t">|</span><span class="grade"><i class="sprite icon lv15"></i> LV15</span>
+                    </div>
+                </div>
+                <ul class="qa-about clearfix">
+                    <li><span>· </span> <a href="#">Meaning of 有经济基础的人</a></li>
+                    <li><span>· </span> <a href="#">Meaning of 有经济基础的人</a></li>
+                    <li><span>· </span> <a href="#">Difference between 真的 and</a></li>
+                    <li><span>· </span> <a href="#">Difference between 真的 and 真</a></li>
+                </ul>
+                <div class="qa-ask">
+                    <hr class="qa-hr"/>
+                    <span>Ask a question </span>Get the answer from the other users
+                    <a class="qa-btn" href="#"><div class="tri-more"></div>Ask</a>
+                </div>
+            </div>
+        </div>
+        <div class="side">
+            <div class="ad">
+                <div class="drawing">
+                    <div class="tri-left"></div>
+                    <div class="drawing-word">AD</div>
+                    <div class="tri-right"></div>
+                </div>
+                <div class="a-content">
+                    <p>This word has been edited times by users good.</p>
+                    <p>This word has been edited times by users good.</p>
+                </div>
+            </div>
+            <div class="cool-users">
+                <div class="title">
+                    <span class="title-words">Cool Users</span>
+                </div>
+                <div class="user-image">
+                    <span class="box"><img src="user-img-1.png" alt="用户头像"/><a href="#">Alice</a></span>
+                    <span class="box"><img src="user-img-2.png" alt="用户头像"/><a href="#">Suahuab</a></span>
+                    <span class="box"><img src="user-img-3.png" alt="用户头像"/><a href="#">Ecila</a></span>
+                    <span class="box"><img src="user-img-4.png" alt="用户头像"/><a href="#">咔咔小布</a></span>
+                </div>
+            </div>
+            <div class="content">
+                <div class="title">
+                    <span class="title-words">New & Updated Content</span>
+                </div>
+                <hr/>
+                <ul class="content-list">
+                    <li><span>· </span>[<a href="#" class="topic">Conversation</a> ] <a href="#">Meaning of 有经济基础的人</a> <i class="sprite content-new"></i></li>
+                    <li><span>· </span>[<a href="#" class="topic">Theme Words</a> ] <a href="#">Difference between 真的</a> <i class="sprite content-refresh"></i></li>
+                    <li><span>· </span>[<a href="#" class="topic">Dictionary</a> ] <a href="#">Use of 对 Use of 对Use of 对</a>  <i class="sprite content-new"></i></li>
+                    <li><span>· </span>[<a href="#" class="topic">Note</a> ] <a href="#">Meaning of 有经济基础的人</a> <i class="sprite content-new"></i></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var searchInput = document.getElementById("search"),
+                video = document.getElementById("video"),
+                nciku = document.getElementById("nciku"),
+                videoDiv = document.getElementsByClassName("video")[0],
+                ncikuDiv = document.getElementsByClassName("nciku")[0];
+        searchInput.onfocus = function () {
+            searchInput.value = "";
+            searchInput.onfocus = null;
+        };
+
+        video.onclick = function(){
+            video.className = "active";
+            nciku.className = "";
+            videoDiv.style.display = "block";
+            ncikuDiv.style.display = "none";
+        };
+        nciku.onclick = function(){
+            nciku.className = "active";
+            video.className = "";
+            ncikuDiv.style.display = "block";
+            videoDiv.style.display = "none";
+        };
+    </script>
+</body>
+</html>
